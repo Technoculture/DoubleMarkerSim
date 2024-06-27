@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "dmsim"
+version = "0.1.0"
+description = "Double Marker Test Simulation"
+authors = ["Satyam Tiwary <satyam@technoculture.io>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">3.12"
+pydantic = "^2.7.4"
+uncertainties = "^3.2.1"
+numpy = "^2.0.0"
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.10.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
