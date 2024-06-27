@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "dmsim"
+name = "down-syndrome-screening"
 version = "0.1.0"
 description = "Double Marker Test Simulation"
 authors = ["Satyam Tiwary <satyam@technoculture.io>"]
@@ -11,9 +11,14 @@ python = ">3.12"
 pydantic = "^2.7.4"
 uncertainties = "^3.2.1"
 numpy = "^2.0.0"
+scipy = "^1.14.0"
+matplotlib = "^3.9.0"
+seaborn = "^0.13.2"
+pandas = "^2.2.2"
 
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.10.1"
+jupyterlab = "^4.2.3"
 
 [build-system]
 requires = ["poetry-core"]
