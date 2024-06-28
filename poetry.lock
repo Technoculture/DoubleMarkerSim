@@ -1222,6 +1222,17 @@ files = [
 ]
 
 [[package]]
+name = "jupyterlab-quarto"
+version = "0.3.5"
+description = "Jupyter extension to enable authoring of Quarto documents within Jupyterlab Notebooks."
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "jupyterlab_quarto-0.3.5-py3-none-any.whl", hash = "sha256:114165409aaad2e68202374ab3d02b08015ed3898427d81bdb3fe9f995e151b9"},
+    {file = "jupyterlab_quarto-0.3.5.tar.gz", hash = "sha256:535f9ea7e1e67ebc0e7d2b14b05126399551881f65a0ecd5d00b8437b66ba974"},
+]
+
+[[package]]
 name = "jupyterlab-server"
 version = "2.27.2"
 description = "A set of server components for JupyterLab and JupyterLab like applications."
@@ -3117,4 +3128,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = ">3.12"
-content-hash = "20218e6684781e07a5f4c37469868da583cf91ee58120cf973c38c30c009c462"
+content-hash = "02003ca521f646127a1432e6994e7b3b3db8dbfef8b6127ed8b8a93fb9105b45"
