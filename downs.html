@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.557">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Modeling the Probability Distribution</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="downs_files/libs/clipboard/clipboard.min.js"></script>
+<script src="downs_files/libs/quarto-html/quarto.js"></script>
+<script src="downs_files/libs/quarto-html/popper.min.js"></script>
+<script src="downs_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="downs_files/libs/quarto-html/anchor.min.js"></script>
+<link href="downs_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="downs_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="downs_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="downs_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="downs_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Modeling the Probability Distribution</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div id="2fa2f3c7-6160-45c7-988c-3c44b5e7ef25" class="cell" data-execution_count="258">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> dataclasses <span class="im">import</span> dataclass, field</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> List, Tuple</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pprint <span class="im">import</span> pprint</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="3a4d63e4-b111-42f6-a3f4-a5fd68291873" class="cell" data-execution_count="186">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="at">@dataclass</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Marker:</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    name: <span class="bu">str</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    median_mom_down: <span class="bu">float</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    median_mom_control: <span class="bu">float</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    log_sd_down: <span class="bu">float</span> <span class="op">=</span> <span class="fl">0.0</span> <span class="co"># log of the sd of the marker in Down Syndrome cases</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    log_sd_control: <span class="bu">float</span> <span class="op">=</span> <span class="fl">0.0</span> <span class="co"># log of the sd of the marker in Control cases</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="bc8cba81-d2b5-470d-9cf1-78b13b6dcc62" class="cell" data-execution_count="189">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="at">@dataclass</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> PopulationConfig:</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">    Maternal Age is Normally distributed.</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    maternal_age_mean: <span class="bu">float</span> <span class="op">=</span> <span class="fl">27.0</span> <span class="co"># Mean maternal age in years</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    maternal_age_sd: <span class="bu">float</span> <span class="op">=</span> <span class="fl">5.5</span> <span class="co"># SD of maternal age in years</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    down_syndrome_prevalence: <span class="bu">float</span> <span class="op">=</span> <span class="dv">1</span><span class="op">/</span><span class="dv">700</span> <span class="co"># Prevalence of Down syndrome in the population</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="at">@dataclass</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> MarkersConfig:</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co">    Config for the various markers being analysed</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    markers: <span class="bu">list</span>[Marker] <span class="op">=</span> field(default_factory<span class="op">=</span><span class="bu">list</span>)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    correlation_matrix_down: np.ndarray <span class="op">=</span> field(default_factory<span class="op">=</span><span class="kw">lambda</span>: np.eye(<span class="dv">1</span>)) <span class="co"># Correlatiuon matrix for Down syndrome cases</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    correlation_matrix_control: np.ndarray <span class="op">=</span> field(default_factory<span class="op">=</span><span class="kw">lambda</span>: np.eye(<span class="dv">1</span>)) <span class="co"># Correlation matrix for control cases</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> __post_init__(<span class="va">self</span>):</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.markers <span class="op">=</span> [</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>            Marker(name<span class="op">=</span><span class="st">"Free B-hCG"</span>, median_mom_down<span class="op">=</span><span class="fl">1.70</span>, median_mom_control<span class="op">=</span><span class="fl">1.01</span>, log_sd_down<span class="op">=</span><span class="fl">0.28</span>, log_sd_control<span class="op">=</span><span class="fl">0.27</span>),</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>            Marker(name<span class="op">=</span><span class="st">"PAPP-A"</span>, median_mom_down<span class="op">=</span><span class="fl">0.49</span>, median_mom_control<span class="op">=</span><span class="fl">1.00</span>, log_sd_down<span class="op">=</span><span class="fl">0.31</span>, log_sd_control<span class="op">=</span><span class="fl">0.25</span>),</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>            Marker(name<span class="op">=</span><span class="st">"NT"</span>, median_mom_down<span class="op">=</span><span class="fl">1.74</span>, median_mom_control<span class="op">=</span><span class="fl">1.01</span>, log_sd_down<span class="op">=</span><span class="fl">0.23</span>, log_sd_control<span class="op">=</span><span class="fl">0.13</span>),</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>        ]</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>        markers_count <span class="op">=</span> <span class="bu">len</span>(<span class="va">self</span>.markers)</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.correlation_matrix_down <span class="op">=</span> <span class="va">self</span>.correlation_matrix_control <span class="op">=</span> np.eye(markers_count)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="16fbced6-668f-4328-a99a-11510175860c" class="cell" data-execution_count="219">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>pop_config <span class="op">=</span> PopulationConfig(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    maternal_age_mean <span class="op">=</span> <span class="fl">27.0</span>,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    maternal_age_sd <span class="op">=</span> <span class="fl">5.5</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>marker_config <span class="op">=</span> MarkersConfig()</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>pprint(pop_config)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>pprint(marker_config)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>PopulationConfig(maternal_age_mean=27.0,
+                 maternal_age_sd=5.5,
+                 down_syndrome_prevalence=0.0014285714285714286)
+MarkersConfig(markers=[Marker(name='Free B-hCG',
+                              median_mom_down=1.7,
+                              median_mom_control=1.01,
+                              log_sd_down=0.28,
+                              log_sd_control=0.27),
+                       Marker(name='PAPP-A',
+                              median_mom_down=0.49,
+                              median_mom_control=1.0,
+                              log_sd_down=0.31,
+                              log_sd_control=0.25),
+                       Marker(name='NT',
+                              median_mom_down=1.74,
+                              median_mom_control=1.01,
+                              log_sd_down=0.23,
+                              log_sd_control=0.13)],
+              correlation_matrix_down=array([[1., 0., 0.],
+       [0., 1., 0.],
+       [0., 0., 1.]]),
+              correlation_matrix_control=array([[1., 0., 0.],
+       [0., 1., 0.],
+       [0., 0., 1.]]))</code></pre>
+</div>
+</div>
+<div id="95f51ba5-9e5d-4cf5-b39f-28a060fc59d0" class="cell" data-execution_count="220">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>config.correlation_matrix_control</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="220">
+<pre><code>array([[1., 0., 0.],
+       [0., 1., 0.],
+       [0., 0., 1.]])</code></pre>
+</div>
+</div>
+<div id="601425dd-1033-4eb9-90bd-c56249bc582c" class="cell" data-execution_count="221">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>sample_size: <span class="bu">int</span> <span class="op">=</span> <span class="dv">100_000</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>is_down <span class="op">=</span> np.random.random(sample_size) <span class="op">&lt;</span> pop_config.down_syndrome_prevalence</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>sampled_prevalence <span class="op">=</span> (np.<span class="bu">sum</span>(is_down) <span class="op">/</span> sample_size)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sampled_prevalence)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> np.allclose(sampled_prevalence, pop_config.down_syndrome_prevalence, atol<span class="op">=</span><span class="dv">1</span><span class="op">/</span><span class="dv">2000</span>), <span class="st">"Sampled prevalence should be similar to expected prevalence"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.00153</code></pre>
+</div>
+</div>
+<div id="68e87514-5afc-4945-826b-e708f19837d7" class="cell" data-scrolled="true" data-execution_count="222">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>min_max <span class="op">=</span> <span class="kw">lambda</span> v, tol: ((v <span class="op">-</span> tol) <span class="op">*</span> <span class="dv">100</span>, (v <span class="op">+</span> tol) <span class="op">*</span> <span class="dv">100</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>min_max(<span class="fl">0.0014</span>, <span class="dv">1</span><span class="op">/</span><span class="dv">2000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="222">
+<pre><code>(0.09, 0.19)</code></pre>
+</div>
+</div>
+<p>Let X be a random variable with a log normal distribution <span class="math inline">\(N(\mu_X, \sigma^2_X\)</span>). Then the <span class="math inline">\(ln(X)\)</span> has the mean <span class="math inline">\(\mu\)</span> and variance <span class="math inline">\(\sigma^2\)</span>.</p>
+<p><span class="math display">\[
+\begin{align}
+\mu &amp;= ln({\frac{\mu^2_X}{\sqrt{\mu^2_X + \sigma^2_X}}}) \\
+\sigma^2 &amp;= ln(1 + \frac{\sigma^2_X}{\mu^2_X})
+\end{align}
+\]</span></p>
+<div id="0d556e20-bb48-42c1-a049-577e6ea1c911" class="cell" data-execution_count="255">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>mu <span class="op">=</span> np.log(pop_config.maternal_age_mean<span class="op">**</span><span class="dv">2</span> <span class="op">/</span> (np.sqrt(pop_config.maternal_age_mean<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> pop_config.maternal_age_sd<span class="op">**</span><span class="dv">2</span>)))</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>sig2 <span class="op">=</span> np.log(<span class="dv">1</span> <span class="op">+</span> (pop_config.maternal_age_sd <span class="op">**</span> <span class="dv">2</span> <span class="op">/</span> pop_config.maternal_age_mean <span class="op">**</span> <span class="dv">2</span>))</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>log_maternal_ages <span class="op">=</span> np.random.normal(</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    mu,</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    np.sqrt(sig2),</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    sample_size</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    mu, sig2</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>log_maternal_ages</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>3.275508180045729 0.04065737191719992</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="255">
+<pre><code>array([3.04965345, 3.33750811, 3.60236882, ..., 3.1938281 , 3.41287571,
+       3.11328614])</code></pre>
+</div>
+</div>
+<div id="007481a0-4969-4170-abff-bd020ddfc1c4" class="cell" data-execution_count="256">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> summary_stats(data: np.ndarray):</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"X ~ N(μ, σ^2): N(</span><span class="sc">{</span>np<span class="sc">.</span>mean(data)<span class="sc">:.4f}</span><span class="ss">, </span><span class="sc">{</span>np<span class="sc">.</span>std(data)<span class="op">**</span><span class="dv">2</span><span class="sc">:.4f}</span><span class="ss">)"</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Range: </span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">min</span>(data)<span class="sc">:.4f}</span><span class="ss"> ≤ X ≤ </span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">max</span>(data)<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"median (M): </span><span class="sc">{</span>np<span class="sc">.</span>median(data)<span class="sc">:.4f}</span><span class="ch">\n</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="aa9b4505-4d2a-48e0-a874-08049f444962" class="cell" data-execution_count="317">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>maternal_age <span class="op">=</span> np.exp(log_maternal_ages)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>plt.hist(maternal_age, bins<span class="op">=</span><span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="317">
+<pre><code>(array([3.000e+00, 2.200e+01, 8.500e+01, 2.910e+02, 6.390e+02, 1.375e+03,
+        2.307e+03, 3.491e+03, 4.905e+03, 6.178e+03, 7.238e+03, 8.041e+03,
+        8.460e+03, 8.467e+03, 8.028e+03, 7.347e+03, 6.404e+03, 5.705e+03,
+        4.614e+03, 3.849e+03, 2.990e+03, 2.413e+03, 1.800e+03, 1.451e+03,
+        1.108e+03, 7.660e+02, 5.460e+02, 4.460e+02, 3.160e+02, 2.170e+02,
+        1.620e+02, 1.080e+02, 7.500e+01, 5.200e+01, 2.600e+01, 2.300e+01,
+        1.800e+01, 1.200e+01, 8.000e+00, 5.000e+00, 3.000e+00, 2.000e+00,
+        2.000e+00, 0.000e+00, 0.000e+00, 1.000e+00, 0.000e+00, 0.000e+00,
+        0.000e+00, 1.000e+00]),
+ array([11.10302253, 12.21397758, 13.32493263, 14.43588768, 15.54684273,
+        16.65779778, 17.76875283, 18.87970788, 19.99066292, 21.10161797,
+        22.21257302, 23.32352807, 24.43448312, 25.54543817, 26.65639322,
+        27.76734827, 28.87830332, 29.98925837, 31.10021342, 32.21116847,
+        33.32212352, 34.43307857, 35.54403362, 36.65498866, 37.76594371,
+        38.87689876, 39.98785381, 41.09880886, 42.20976391, 43.32071896,
+        44.43167401, 45.54262906, 46.65358411, 47.76453916, 48.87549421,
+        49.98644926, 51.09740431, 52.20835936, 53.3193144 , 54.43026945,
+        55.5412245 , 56.65217955, 57.7631346 , 58.87408965, 59.9850447 ,
+        61.09599975, 62.2069548 , 63.31790985, 64.4288649 , 65.53981995,
+        66.650775  ]),
+ &lt;BarContainer object of 50 artists&gt;)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="downs_files/figure-html/cell-11-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="d2d1b270-a820-4d88-87b6-0416eda4be79" class="cell" data-execution_count="318">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>summary_stats(log_maternal_ages)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>summary_stats(np.exp(log_maternal_ages))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>X ~ N(μ, σ^2): N(3.2755, 0.0406)
+Range: 2.4072 ≤ X ≤ 4.1995
+median (M): 3.2756
+
+X ~ N(μ, σ^2): N(26.9990, 30.1752)
+Range: 11.1030 ≤ X ≤ 66.6508
+median (M): 26.4595
+</code></pre>
+</div>
+</div>
+<p><span class="math display">\[
+Y = ln(X), Y \sim N(\mu, \sigma)
+\]</span></p>
+<p><span class="math display">\[
+M = e^\mu
+=&gt; ln(M) = \mu
+\]</span></p>
+<div id="0f543dab-43ef-49f0-be78-45cc8ba610a1" class="cell" data-execution_count="319">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>mean_down <span class="op">=</span> np.log([m.median_mom_down <span class="cf">for</span> m <span class="kw">in</span> marker_config.markers])</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>mean_control <span class="op">=</span> np.log([m.median_mom_control <span class="cf">for</span> m <span class="kw">in</span> marker_config.markers])</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>mean_down, mean_control</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="319">
+<pre><code>(array([ 0.53062825, -0.71334989,  0.55388511]),
+ array([0.00995033, 0.        , 0.00995033]))</code></pre>
+</div>
+</div>
+<section id="covariance-matrices-and-multivariate-distribution" class="level2">
+<h2 class="anchored" data-anchor-id="covariance-matrices-and-multivariate-distribution">Covariance Matrices and Multivariate Distribution</h2>
+<div id="da497634-e7b9-4fe1-9dfb-9e18b58323cb" class="cell" data-execution_count="320">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>cov_down <span class="op">=</span> np.diag([m.log_sd_down<span class="op">**</span><span class="dv">2</span> <span class="cf">for</span> m <span class="kw">in</span> marker_config.markers])</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>cov_control <span class="op">=</span> np.diag([m.log_sd_control<span class="op">**</span><span class="dv">2</span> <span class="cf">for</span> m <span class="kw">in</span> marker_config.markers])</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>cov_down, cov_control</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="320">
+<pre><code>(array([[0.0784, 0.    , 0.    ],
+        [0.    , 0.0961, 0.    ],
+        [0.    , 0.    , 0.0529]]),
+ array([[0.0729, 0.    , 0.    ],
+        [0.    , 0.0625, 0.    ],
+        [0.    , 0.    , 0.0169]]))</code></pre>
+</div>
+</div>
+<div id="cf1d8945-0c83-4381-a1f3-2d477bccff04" class="cell" data-execution_count="321">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>correlation_matrix_down <span class="op">=</span> np.array(</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    [[<span class="fl">1.0</span>, <span class="fl">0.191</span>, <span class="fl">0.0</span>],</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>     [<span class="fl">0.191</span>, <span class="fl">1.0</span>, <span class="fl">0.0</span>],</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>     [<span class="fl">0.0</span>, <span class="fl">0.0</span>, <span class="fl">1.0</span>]]</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="af720a08-2e92-4730-8da3-795c2eca9e12" class="cell" data-execution_count="322">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>correlation_matrix_control <span class="op">=</span> np.array(</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    [[<span class="fl">1.0</span>, <span class="fl">0.186</span>, <span class="fl">0.0</span>],</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>     [<span class="fl">0.186</span>, <span class="fl">1.0</span>, <span class="fl">0.0</span>],</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>     [<span class="fl">0.0</span>, <span class="fl">0.0</span>, <span class="fl">1.0</span>]]</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="44247ecd-5258-4436-8626-026fc23eed11" class="cell" data-execution_count="323">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>cov_down <span class="op">=</span> cov_down <span class="op">@</span> correlation_matrix_down <span class="op">@</span> cov_down</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>cov_down</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="323">
+<pre><code>array([[0.00614656, 0.00143904, 0.        ],
+       [0.00143904, 0.00923521, 0.        ],
+       [0.        , 0.        , 0.00279841]])</code></pre>
+</div>
+</div>
+<div id="28a70ffb-360c-41b2-b680-0a56be1c5c8f" class="cell" data-execution_count="324">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>cov_control <span class="op">=</span> cov_control <span class="op">@</span> correlation_matrix_control <span class="op">@</span> cov_control</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>cov_control</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="324">
+<pre><code>array([[0.00531441, 0.00084746, 0.        ],
+       [0.00084746, 0.00390625, 0.        ],
+       [0.        , 0.        , 0.00028561]])</code></pre>
+</div>
+</div>
+<div id="78b89ffe-f00d-4b59-954d-a19a3f482b58" class="cell" data-execution_count="325">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>log_marker_values_down <span class="op">=</span> np.random.multivariate_normal(</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    mean_down,</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    cov_down,</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    np.<span class="bu">sum</span>(is_down)</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>log_marker_values_down, log_marker_values_down.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="325">
+<pre><code>(array([[ 0.64048082, -0.45763422,  0.52396608],
+        [ 0.45052312, -0.59227148,  0.56558925],
+        [ 0.56724229, -0.6689793 ,  0.47430877],
+        [ 0.59763533, -0.73031411,  0.53167205],
+        [ 0.47594115, -0.64262728,  0.64825042],
+        [ 0.55081414, -0.80618359,  0.52405177],
+        [ 0.37364069, -0.64840928,  0.58689585],
+        [ 0.57282906, -0.84960203,  0.59841787],
+        [ 0.55585133, -0.76989342,  0.56711451],
+        [ 0.47807066, -0.78714041,  0.64902706],
+        [ 0.71050277, -0.71789351,  0.63163356],
+        [ 0.45403568, -0.84594293,  0.61223752],
+        [ 0.56024985, -0.81699193,  0.50686075],
+        [ 0.59017325, -0.8673571 ,  0.6223363 ],
+        [ 0.46594459, -0.91876818,  0.59468102],
+        [ 0.57533169, -0.62740756,  0.5925375 ],
+        [ 0.48912359, -0.68386878,  0.53419938],
+        [ 0.3723333 , -0.70958725,  0.63623503],
+        [ 0.52674843, -0.75404724,  0.44015795],
+        [ 0.55158439, -0.61888131,  0.60446323],
+        [ 0.52387764, -0.62540743,  0.4925139 ],
+        [ 0.42727011, -0.6046745 ,  0.57924157],
+        [ 0.54308144, -0.56672831,  0.56807006],
+        [ 0.54976259, -0.73778172,  0.58092122],
+        [ 0.58024141, -0.79072178,  0.55489992],
+        [ 0.69829423, -0.65155442,  0.54467892],
+        [ 0.70550198, -0.60937487,  0.53962209],
+        [ 0.40757238, -0.63017838,  0.52907921],
+        [ 0.44284693, -0.94137742,  0.57121602],
+        [ 0.46348507, -0.75997309,  0.5953651 ],
+        [ 0.66243026, -0.8120594 ,  0.60868372],
+        [ 0.45735012, -0.85687734,  0.52540381],
+        [ 0.66330037, -0.609449  ,  0.53606006],
+        [ 0.6238936 , -0.71872747,  0.57087392],
+        [ 0.59383293, -0.66274194,  0.61666591],
+        [ 0.56094396, -0.68963426,  0.46771137],
+        [ 0.36243055, -0.7988913 ,  0.57965403],
+        [ 0.58432482, -0.51528121,  0.59778985],
+        [ 0.6144921 , -0.58659208,  0.51495965],
+        [ 0.50529945, -0.75110858,  0.55289339],
+        [ 0.60753812, -0.6284797 ,  0.57383167],
+        [ 0.46022768, -0.64379372,  0.50566252],
+        [ 0.45244656, -0.77684405,  0.57186621],
+        [ 0.49742793, -0.68834978,  0.55033549],
+        [ 0.53970886, -0.81536869,  0.56448833],
+        [ 0.49679632, -0.79124247,  0.60657472],
+        [ 0.51256129, -0.69208648,  0.59431329],
+        [ 0.65006165, -0.68666619,  0.55734374],
+        [ 0.56265172, -0.78945379,  0.52020087],
+        [ 0.49023838, -0.70621975,  0.59413673],
+        [ 0.52762683, -0.67648461,  0.52071654],
+        [ 0.48874459, -0.60019043,  0.56636143],
+        [ 0.63172734, -0.63131912,  0.55228313],
+        [ 0.57268791, -0.81600538,  0.56802326],
+        [ 0.60742539, -0.59011824,  0.61646732],
+        [ 0.48936007, -0.76694138,  0.53161502],
+        [ 0.49331515, -0.74233978,  0.55842864],
+        [ 0.4582763 , -0.94526742,  0.4893626 ],
+        [ 0.56905048, -0.67115184,  0.61087844],
+        [ 0.49560531, -0.70573976,  0.49439337],
+        [ 0.45612051, -0.79138582,  0.65630938],
+        [ 0.58172864, -0.7157013 ,  0.59466334],
+        [ 0.49436816, -0.7264651 ,  0.50151987],
+        [ 0.49871874, -0.67628234,  0.63643165],
+        [ 0.57614796, -0.69263557,  0.5898285 ],
+        [ 0.6246311 , -0.72798583,  0.54473872],
+        [ 0.76217747, -0.59407184,  0.63212189],
+        [ 0.44394502, -0.80539066,  0.61761367],
+        [ 0.53104407, -0.68731245,  0.53773394],
+        [ 0.56845587, -0.59796641,  0.5294595 ],
+        [ 0.60651504, -0.64317584,  0.53133643],
+        [ 0.52738239, -0.61671491,  0.48749111],
+        [ 0.49721026, -0.74213207,  0.53086148],
+        [ 0.66210835, -0.7712158 ,  0.49058056],
+        [ 0.59319954, -0.63307568,  0.57347166],
+        [ 0.53918941, -0.73044442,  0.6073262 ],
+        [ 0.54236839, -0.69959323,  0.58924463],
+        [ 0.54418981, -0.72439541,  0.55989451],
+        [ 0.56601422, -0.71287902,  0.53889411],
+        [ 0.47259313, -0.69115578,  0.50815124],
+        [ 0.60365645, -0.83583972,  0.54216434],
+        [ 0.43991037, -0.68973213,  0.59230346],
+        [ 0.50206082, -0.76373048,  0.61500435],
+        [ 0.48706085, -0.65738161,  0.45350192],
+        [ 0.60947118, -0.5466024 ,  0.42146124],
+        [ 0.43979923, -0.81989025,  0.5804038 ],
+        [ 0.51900705, -0.75812284,  0.53018039],
+        [ 0.39636641, -0.82611511,  0.51825237],
+        [ 0.46692606, -0.68644744,  0.68777163],
+        [ 0.50917317, -0.6366692 ,  0.53668633],
+        [ 0.56866791, -0.76723365,  0.54566596],
+        [ 0.50916692, -0.8478252 ,  0.61584068],
+        [ 0.63787687, -0.63318572,  0.53042055],
+        [ 0.57102668, -0.7870988 ,  0.55163313],
+        [ 0.57709123, -0.77901729,  0.60158686],
+        [ 0.44747426, -0.60808744,  0.57164645],
+        [ 0.51654888, -0.87579535,  0.67025442],
+        [ 0.40365391, -0.85529735,  0.54712781],
+        [ 0.58152157, -0.62364201,  0.49528325],
+        [ 0.72649246, -0.75329307,  0.54125214],
+        [ 0.49045791, -0.76265316,  0.49318382],
+        [ 0.52041553, -0.59077641,  0.5648076 ],
+        [ 0.53247666, -0.50687766,  0.64915308],
+        [ 0.51440435, -0.72676469,  0.5495041 ],
+        [ 0.58060343, -0.70233199,  0.54704824],
+        [ 0.54048159, -0.75985724,  0.53724484],
+        [ 0.5923681 , -0.76942701,  0.61545189],
+        [ 0.63531401, -0.69650123,  0.5868677 ],
+        [ 0.57112193, -0.6104194 ,  0.60323835],
+        [ 0.4970184 , -0.84798138,  0.52570658],
+        [ 0.45757325, -0.79940211,  0.58938375],
+        [ 0.63088888, -0.7434557 ,  0.60604772],
+        [ 0.63955275, -0.76323509,  0.61894521],
+        [ 0.44766086, -0.77026172,  0.49674082],
+        [ 0.46603018, -0.79484512,  0.47932706],
+        [ 0.50421522, -0.77768005,  0.54059981],
+        [ 0.62476128, -0.80445633,  0.53056314],
+        [ 0.41557007, -0.78157568,  0.59849585],
+        [ 0.48282916, -0.58988729,  0.5102765 ],
+        [ 0.5795756 , -0.62432088,  0.59802679],
+        [ 0.47104667, -0.62595286,  0.54025304],
+        [ 0.62676862, -0.61528684,  0.62783054],
+        [ 0.56445863, -0.80164924,  0.5614305 ],
+        [ 0.53632023, -0.58581144,  0.67639736],
+        [ 0.51863212, -0.66677788,  0.54919319],
+        [ 0.48042285, -0.76951902,  0.6059849 ],
+        [ 0.57973517, -0.57156727,  0.49318385],
+        [ 0.42595241, -0.789919  ,  0.5547206 ],
+        [ 0.51213363, -0.72448794,  0.54795126],
+        [ 0.61735913, -0.74706896,  0.62625385],
+        [ 0.52787749, -0.6793585 ,  0.52570135],
+        [ 0.56735771, -0.79124614,  0.5458041 ],
+        [ 0.53460418, -0.76755475,  0.60996398],
+        [ 0.57432008, -0.66462955,  0.65113246],
+        [ 0.38679322, -0.80980989,  0.47695039],
+        [ 0.6307084 , -0.56336879,  0.49936715],
+        [ 0.6543267 , -0.69751941,  0.59513364],
+        [ 0.48230999, -0.65087625,  0.67429081],
+        [ 0.44400818, -0.81490522,  0.57188956],
+        [ 0.42735237, -0.69193032,  0.59629858],
+        [ 0.41317287, -0.74345066,  0.46528905],
+        [ 0.4658452 , -0.57775164,  0.51890379],
+        [ 0.67104445, -0.87580128,  0.53730997],
+        [ 0.43925629, -0.65682956,  0.56668664],
+        [ 0.46690936, -0.52407706,  0.46668358],
+        [ 0.50253819, -0.79870292,  0.60831599],
+        [ 0.59908803, -0.79975239,  0.56982328],
+        [ 0.65178333, -0.62748802,  0.66351541],
+        [ 0.47331088, -0.57923037,  0.65222053],
+        [ 0.50121862, -0.75072386,  0.56901548],
+        [ 0.48633528, -0.60841582,  0.52651554],
+        [ 0.67842937, -0.64441127,  0.54203118],
+        [ 0.46178425, -0.71482244,  0.67783587]]),
+ (153, 3))</code></pre>
+</div>
+</div>
+<div id="0c01a75b-8bbf-4e6c-b9af-140c7a90cf67" class="cell" data-execution_count="326">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>log_marker_values_control <span class="op">=</span> np.random.multivariate_normal(</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    mean_control,</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>    cov_control,</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>    np.<span class="bu">sum</span>(<span class="op">~</span>is_down)</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>log_marker_values_control, log_marker_values_control.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="326">
+<pre><code>(array([[ 0.01228474, -0.03512532, -0.01406786],
+        [ 0.07783058, -0.02319073,  0.00148299],
+        [-0.0180382 , -0.00813195,  0.03117401],
+        ...,
+        [ 0.06829399,  0.03078748,  0.0172539 ],
+        [-0.0372469 ,  0.01955245, -0.00059807],
+        [ 0.0379814 , -0.01990393, -0.00944319]]),
+ (99847, 3))</code></pre>
+</div>
+</div>
+<div id="6fd9d1f2-6b85-4b6a-abca-46ebca186ee3" class="cell" data-execution_count="327">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>log_marker_values <span class="op">=</span> np.zeros((sample_size, <span class="bu">len</span>(marker_config.markers)))</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>log_marker_values.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="327">
+<pre><code>(100000, 3)</code></pre>
+</div>
+</div>
+<div id="43b9ac4b-6d6b-40de-87d9-2f13d60e59ed" class="cell" data-execution_count="328">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>log_marker_values[is_down] <span class="op">=</span> log_marker_values_down</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>log_marker_values[<span class="op">~</span>is_down] <span class="op">=</span> log_marker_values_control</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="3853e1b4-3eeb-4c48-b806-4cb9f924ae63" class="cell" data-execution_count="329">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>log_marker_values</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="329">
+<pre><code>array([[ 0.01228474, -0.03512532, -0.01406786],
+       [ 0.07783058, -0.02319073,  0.00148299],
+       [-0.0180382 , -0.00813195,  0.03117401],
+       ...,
+       [ 0.06829399,  0.03078748,  0.0172539 ],
+       [-0.0372469 ,  0.01955245, -0.00059807],
+       [ 0.0379814 , -0.01990393, -0.00944319]])</code></pre>
+</div>
+</div>
+<div id="12a84074-89bf-499f-8c2b-9369a4c750fd" class="cell" data-execution_count="330">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>marker_values <span class="op">=</span> np.exp(log_marker_values)</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>marker_values</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="330">
+<pre><code>array([[1.01236051, 0.96548441, 0.98603063],
+       [1.08093951, 0.97707611, 1.00148409],
+       [0.98212351, 0.99190103, 1.03166501],
+       ...,
+       [1.07068003, 1.03126631, 1.01740361],
+       [0.96343823, 1.01974485, 0.99940211],
+       [1.03871191, 0.98029285, 0.99060126]])</code></pre>
+</div>
+</div>
+<div id="1c66abcc-6070-4782-9e55-03681ef0f47d" class="cell" data-execution_count="341">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure()</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> fig.add_subplot(<span class="dv">111</span>, projection<span class="op">=</span><span class="st">'3d'</span>)</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>ax.scatter(</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>    marker_values[:,<span class="dv">0</span>], </span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>    marker_values[:,<span class="dv">1</span>],  </span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># marker_values[:,2],</span></span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>    maternal_age,</span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>    c<span class="op">=~</span>is_down</span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="downs_files/figure-html/cell-25-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
