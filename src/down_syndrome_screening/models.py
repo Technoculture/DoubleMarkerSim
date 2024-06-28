@@ -11,8 +11,14 @@ class Marker:
     name: str
     median_mom_down: float
     median_mom_control: float
-    log_sd_down: float
-    log_sd_control: float
+    log_sd_down: float = Field(
+        0.0,
+        description="Logarithm of the standard deviation of the marker in Down syndrome cases",
+    )
+    log_sd_control: float = Field(
+        0.0,
+        description="Logarithm of the standard deviation of the marker in control cases",
+    )
 
 
 class Population(BaseModel):
@@ -88,4 +94,3 @@ def create_default_population() -> Population:
         correlation_matrix_down=correlation_matrix_down,
         correlation_matrix_control=correlation_matrix_control,
     )
-
