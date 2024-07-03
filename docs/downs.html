@@ -125,7 +125,7 @@ window.Quarto = {
 </header>
 
 
-<div id="2fa2f3c7-6160-45c7-988c-3c44b5e7ef25" class="cell" data-execution_count="258">
+<div id="2fa2f3c7-6160-45c7-988c-3c44b5e7ef25" class="cell" data-execution_count="397">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> dataclasses <span class="im">import</span> dataclass, field</span>
@@ -133,7 +133,7 @@ window.Quarto = {
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pprint <span class="im">import</span> pprint</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="3a4d63e4-b111-42f6-a3f4-a5fd68291873" class="cell" data-execution_count="186">
+<div id="3a4d63e4-b111-42f6-a3f4-a5fd68291873" class="cell" data-execution_count="398">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="at">@dataclass</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Marker:</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    name: <span class="bu">str</span></span>
@@ -142,7 +142,7 @@ window.Quarto = {
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    log_sd_down: <span class="bu">float</span> <span class="op">=</span> <span class="fl">0.0</span> <span class="co"># log of the sd of the marker in Down Syndrome cases</span></span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    log_sd_control: <span class="bu">float</span> <span class="op">=</span> <span class="fl">0.0</span> <span class="co"># log of the sd of the marker in Control cases</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="bc8cba81-d2b5-470d-9cf1-78b13b6dcc62" class="cell" data-execution_count="189">
+<div id="bc8cba81-d2b5-470d-9cf1-78b13b6dcc62" class="cell" data-execution_count="399">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="at">@dataclass</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> PopulationConfig:</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
@@ -173,7 +173,7 @@ window.Quarto = {
 <span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>        markers_count <span class="op">=</span> <span class="bu">len</span>(<span class="va">self</span>.markers)</span>
 <span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.correlation_matrix_down <span class="op">=</span> <span class="va">self</span>.correlation_matrix_control <span class="op">=</span> np.eye(markers_count)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="16fbced6-668f-4328-a99a-11510175860c" class="cell" data-execution_count="219">
+<div id="16fbced6-668f-4328-a99a-11510175860c" class="cell" data-execution_count="400">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>pop_config <span class="op">=</span> PopulationConfig(</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    maternal_age_mean <span class="op">=</span> <span class="fl">27.0</span>,</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    maternal_age_sd <span class="op">=</span> <span class="fl">5.5</span></span>
@@ -210,15 +210,15 @@ MarkersConfig(markers=[Marker(name='Free B-hCG',
        [0., 0., 1.]]))</code></pre>
 </div>
 </div>
-<div id="95f51ba5-9e5d-4cf5-b39f-28a060fc59d0" class="cell" data-execution_count="220">
+<div id="95f51ba5-9e5d-4cf5-b39f-28a060fc59d0" class="cell" data-execution_count="401">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>config.correlation_matrix_control</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="220">
+<div class="cell-output cell-output-display" data-execution_count="401">
 <pre><code>array([[1., 0., 0.],
        [0., 1., 0.],
        [0., 0., 1.]])</code></pre>
 </div>
 </div>
-<div id="601425dd-1033-4eb9-90bd-c56249bc582c" class="cell" data-execution_count="221">
+<div id="601425dd-1033-4eb9-90bd-c56249bc582c" class="cell" data-execution_count="402">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>sample_size: <span class="bu">int</span> <span class="op">=</span> <span class="dv">100_000</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>is_down <span class="op">=</span> np.random.random(sample_size) <span class="op">&lt;</span> pop_config.down_syndrome_prevalence</span>
@@ -228,14 +228,14 @@ MarkersConfig(markers=[Marker(name='Free B-hCG',
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> np.allclose(sampled_prevalence, pop_config.down_syndrome_prevalence, atol<span class="op">=</span><span class="dv">1</span><span class="op">/</span><span class="dv">2000</span>), <span class="st">"Sampled prevalence should be similar to expected prevalence"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>0.00153</code></pre>
+<pre><code>0.00158</code></pre>
 </div>
 </div>
-<div id="68e87514-5afc-4945-826b-e708f19837d7" class="cell" data-scrolled="true" data-execution_count="222">
+<div id="68e87514-5afc-4945-826b-e708f19837d7" class="cell" data-scrolled="true" data-execution_count="403">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>min_max <span class="op">=</span> <span class="kw">lambda</span> v, tol: ((v <span class="op">-</span> tol) <span class="op">*</span> <span class="dv">100</span>, (v <span class="op">+</span> tol) <span class="op">*</span> <span class="dv">100</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>min_max(<span class="fl">0.0014</span>, <span class="dv">1</span><span class="op">/</span><span class="dv">2000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="222">
+<div class="cell-output cell-output-display" data-execution_count="403">
 <pre><code>(0.09, 0.19)</code></pre>
 </div>
 </div>
@@ -246,7 +246,7 @@ MarkersConfig(markers=[Marker(name='Free B-hCG',
 \sigma^2 &amp;= ln(1 + \frac{\sigma^2_X}{\mu^2_X})
 \end{align}
 \]</span></p>
-<div id="0d556e20-bb48-42c1-a049-577e6ea1c911" class="cell" data-execution_count="342">
+<div id="0d556e20-bb48-42c1-a049-577e6ea1c911" class="cell" data-execution_count="404">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>mu <span class="op">=</span> np.log(pop_config.maternal_age_mean<span class="op">**</span><span class="dv">2</span> <span class="op">/</span> (np.sqrt(pop_config.maternal_age_mean<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> pop_config.maternal_age_sd<span class="op">**</span><span class="dv">2</span>)))</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>sig2 <span class="op">=</span> np.log(<span class="dv">1</span> <span class="op">+</span> (pop_config.maternal_age_sd <span class="op">**</span> <span class="dv">2</span> <span class="op">/</span> pop_config.maternal_age_mean <span class="op">**</span> <span class="dv">2</span>))</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>sig <span class="op">=</span> np.sqrt(sig2)</span>
@@ -265,42 +265,42 @@ MarkersConfig(markers=[Marker(name='Free B-hCG',
 <div class="cell-output cell-output-stdout">
 <pre><code>3.275508180045729 0.20163673255932293</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="342">
-<pre><code>array([3.14818827, 3.57078135, 3.20687422, ..., 3.25878266, 3.48038387,
-       3.11228057])</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="404">
+<pre><code>array([2.95944013, 3.30884324, 3.07669179, ..., 3.41046984, 3.38456257,
+       3.45887912])</code></pre>
 </div>
 </div>
-<div id="007481a0-4969-4170-abff-bd020ddfc1c4" class="cell" data-execution_count="343">
+<div id="007481a0-4969-4170-abff-bd020ddfc1c4" class="cell" data-execution_count="405">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> summary_stats(data: np.ndarray):</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"X ~ N(μ, σ^2): N(</span><span class="sc">{</span>np<span class="sc">.</span>mean(data)<span class="sc">:.4f}</span><span class="ss">, </span><span class="sc">{</span>np<span class="sc">.</span>std(data)<span class="op">**</span><span class="dv">2</span><span class="sc">:.4f}</span><span class="ss">)"</span>)</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Range: </span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">min</span>(data)<span class="sc">:.4f}</span><span class="ss"> ≤ X ≤ </span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">max</span>(data)<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"median (M): </span><span class="sc">{</span>np<span class="sc">.</span>median(data)<span class="sc">:.4f}</span><span class="ch">\n</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="aa9b4505-4d2a-48e0-a874-08049f444962" class="cell" data-execution_count="344">
+<div id="aa9b4505-4d2a-48e0-a874-08049f444962" class="cell" data-execution_count="406">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>maternal_age <span class="op">=</span> np.exp(log_maternal_ages)</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>plt.hist(maternal_age, bins<span class="op">=</span><span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="344">
-<pre><code>(array([2.000e+00, 6.000e+00, 4.900e+01, 1.540e+02, 3.590e+02, 7.380e+02,
-        1.434e+03, 2.421e+03, 3.557e+03, 4.644e+03, 5.943e+03, 6.863e+03,
-        7.554e+03, 8.049e+03, 8.068e+03, 7.795e+03, 7.109e+03, 6.461e+03,
-        5.572e+03, 4.874e+03, 3.938e+03, 3.246e+03, 2.631e+03, 2.119e+03,
-        1.696e+03, 1.172e+03, 9.860e+02, 6.600e+02, 5.220e+02, 3.990e+02,
-        2.480e+02, 2.120e+02, 1.630e+02, 9.900e+01, 8.100e+01, 5.000e+01,
-        3.500e+01, 1.900e+01, 2.800e+01, 1.400e+01, 1.200e+01, 7.000e+00,
-        5.000e+00, 0.000e+00, 1.000e+00, 2.000e+00, 0.000e+00, 1.000e+00,
-        1.000e+00, 1.000e+00]),
- array([10.64419921, 11.69928302, 12.75436684, 13.80945065, 14.86453446,
-        15.91961827, 16.97470209, 18.0297859 , 19.08486971, 20.13995353,
-        21.19503734, 22.25012115, 23.30520496, 24.36028878, 25.41537259,
-        26.4704564 , 27.52554022, 28.58062403, 29.63570784, 30.69079165,
-        31.74587547, 32.80095928, 33.85604309, 34.9111269 , 35.96621072,
-        37.02129453, 38.07637834, 39.13146216, 40.18654597, 41.24162978,
-        42.29671359, 43.35179741, 44.40688122, 45.46196503, 46.51704885,
-        47.57213266, 48.62721647, 49.68230028, 50.7373841 , 51.79246791,
-        52.84755172, 53.90263553, 54.95771935, 56.01280316, 57.06788697,
-        58.12297079, 59.1780546 , 60.23313841, 61.28822222, 62.34330604,
-        63.39838985]),
+<div class="cell-output cell-output-display" data-execution_count="406">
+<pre><code>(array([1.000e+00, 6.000e+00, 2.100e+01, 5.200e+01, 1.200e+02, 3.330e+02,
+        6.600e+02, 1.140e+03, 1.849e+03, 2.801e+03, 3.748e+03, 4.861e+03,
+        5.840e+03, 6.628e+03, 7.131e+03, 7.409e+03, 7.410e+03, 7.152e+03,
+        6.611e+03, 6.068e+03, 5.389e+03, 4.709e+03, 3.949e+03, 3.347e+03,
+        2.747e+03, 2.255e+03, 1.726e+03, 1.442e+03, 1.123e+03, 8.400e+02,
+        6.260e+02, 5.020e+02, 4.060e+02, 3.090e+02, 2.050e+02, 1.520e+02,
+        1.280e+02, 7.700e+01, 5.700e+01, 6.100e+01, 3.500e+01, 1.900e+01,
+        1.900e+01, 1.000e+01, 8.000e+00, 1.000e+01, 2.000e+00, 2.000e+00,
+        2.000e+00, 2.000e+00]),
+ array([ 9.87970597, 10.85373216, 11.82775835, 12.80178454, 13.77581073,
+        14.74983692, 15.72386311, 16.6978893 , 17.67191549, 18.64594168,
+        19.61996787, 20.59399406, 21.56802024, 22.54204643, 23.51607262,
+        24.49009881, 25.464125  , 26.43815119, 27.41217738, 28.38620357,
+        29.36022976, 30.33425595, 31.30828214, 32.28230832, 33.25633451,
+        34.2303607 , 35.20438689, 36.17841308, 37.15243927, 38.12646546,
+        39.10049165, 40.07451784, 41.04854403, 42.02257022, 42.99659641,
+        43.97062259, 44.94464878, 45.91867497, 46.89270116, 47.86672735,
+        48.84075354, 49.81477973, 50.78880592, 51.76283211, 52.7368583 ,
+        53.71088449, 54.68491068, 55.65893686, 56.63296305, 57.60698924,
+        58.58101543]),
  &lt;BarContainer object of 50 artists&gt;)</code></pre>
 </div>
 <div class="cell-output cell-output-display">
@@ -311,17 +311,17 @@ MarkersConfig(markers=[Marker(name='Free B-hCG',
 </div>
 </div>
 </div>
-<div id="d2d1b270-a820-4d88-87b6-0416eda4be79" class="cell" data-execution_count="345">
+<div id="d2d1b270-a820-4d88-87b6-0416eda4be79" class="cell" data-execution_count="407">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>summary_stats(log_maternal_ages)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>summary_stats(np.exp(log_maternal_ages))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>X ~ N(μ, σ^2): N(3.2767, 0.0404)
-Range: 2.3650 ≤ X ≤ 4.1494
-median (M): 3.2767
+<pre><code>X ~ N(μ, σ^2): N(3.2748, 0.0408)
+Range: 2.2905 ≤ X ≤ 4.0704
+median (M): 3.2747
 
-X ~ N(μ, σ^2): N(27.0294, 30.0849)
-Range: 10.6442 ≤ X ≤ 63.3984
-median (M): 26.4894
+X ~ N(μ, σ^2): N(26.9808, 30.2446)
+Range: 9.8797 ≤ X ≤ 58.5810
+median (M): 26.4363
 </code></pre>
 </div>
 </div>
@@ -332,12 +332,12 @@ Y = ln(X), Y \sim N(\mu, \sigma)
 M = e^\mu
 =&gt; ln(M) = \mu
 \]</span></p>
-<div id="0f543dab-43ef-49f0-be78-45cc8ba610a1" class="cell" data-execution_count="319">
+<div id="0f543dab-43ef-49f0-be78-45cc8ba610a1" class="cell" data-execution_count="408">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>mean_down <span class="op">=</span> np.log([m.median_mom_down <span class="cf">for</span> m <span class="kw">in</span> marker_config.markers])</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>mean_control <span class="op">=</span> np.log([m.median_mom_control <span class="cf">for</span> m <span class="kw">in</span> marker_config.markers])</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>mean_down, mean_control</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="319">
+<div class="cell-output cell-output-display" data-execution_count="408">
 <pre><code>(array([ 0.53062825, -0.71334989,  0.55388511]),
  array([0.00995033, 0.        , 0.00995033]))</code></pre>
 </div>
@@ -353,12 +353,12 @@ Var(X_1) &amp; 0 &amp; 0\\
 \end{bmatrix}
 \]</span></p>
 <p>The covariance matrix is a diagonal matrix containing only the variances of each of the markers.</p>
-<div id="da497634-e7b9-4fe1-9dfb-9e18b58323cb" class="cell" data-execution_count="359">
+<div id="da497634-e7b9-4fe1-9dfb-9e18b58323cb" class="cell" data-execution_count="409">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>cov_down <span class="op">=</span> np.diag([m.log_sd_down<span class="op">**</span><span class="dv">2</span> <span class="cf">for</span> m <span class="kw">in</span> marker_config.markers])</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>cov_control <span class="op">=</span> np.diag([m.log_sd_control<span class="op">**</span><span class="dv">2</span> <span class="cf">for</span> m <span class="kw">in</span> marker_config.markers])</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>cov_down, cov_control</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="359">
+<div class="cell-output cell-output-display" data-execution_count="409">
 <pre><code>(array([[0.0784, 0.    , 0.    ],
         [0.    , 0.0961, 0.    ],
         [0.    , 0.    , 0.0529]]),
@@ -367,45 +367,45 @@ Var(X_1) &amp; 0 &amp; 0\\
         [0.    , 0.    , 0.0169]]))</code></pre>
 </div>
 </div>
-<div id="cf1d8945-0c83-4381-a1f3-2d477bccff04" class="cell" data-execution_count="360">
+<div id="cf1d8945-0c83-4381-a1f3-2d477bccff04" class="cell" data-execution_count="410">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>correlation_matrix_down <span class="op">=</span> np.array(</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    [[<span class="fl">1.</span>, <span class="fl">0.191</span>, <span class="fl">0.</span>],</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>     [<span class="fl">0.191</span>, <span class="fl">1.</span>, <span class="fl">0.</span>],</span>
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>     [<span class="fl">0.</span>, <span class="fl">0.</span>, <span class="fl">1.</span>]]</span>
 <span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="af720a08-2e92-4730-8da3-795c2eca9e12" class="cell" data-execution_count="361">
+<div id="af720a08-2e92-4730-8da3-795c2eca9e12" class="cell" data-execution_count="411">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>correlation_matrix_control <span class="op">=</span> np.array(</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    [[<span class="fl">1.</span>, <span class="fl">0.186</span>, <span class="fl">0.</span>],</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>     [<span class="fl">0.186</span>, <span class="fl">1.</span>, <span class="fl">0.</span>],</span>
 <span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>     [<span class="fl">0.</span>, <span class="fl">0.</span>, <span class="fl">1.</span>]]</span>
 <span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="7d3d06f8-1e5e-4fe8-9d13-e5d11b70e549" class="cell" data-execution_count="362">
+<div id="7d3d06f8-1e5e-4fe8-9d13-e5d11b70e549" class="cell" data-execution_count="412">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>cov_down.shape, correlation_matrix_down.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="362">
+<div class="cell-output cell-output-display" data-execution_count="412">
 <pre><code>((3, 3), (3, 3))</code></pre>
 </div>
 </div>
-<div id="44247ecd-5258-4436-8626-026fc23eed11" class="cell" data-execution_count="363">
+<div id="44247ecd-5258-4436-8626-026fc23eed11" class="cell" data-execution_count="413">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>cov_down <span class="op">=</span> np.sqrt(cov_down) <span class="op">@</span> correlation_matrix_down <span class="op">@</span> np.sqrt(cov_down)</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>cov_down</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="363">
+<div class="cell-output cell-output-display" data-execution_count="413">
 <pre><code>array([[0.0784   , 0.0165788, 0.       ],
        [0.0165788, 0.0961   , 0.       ],
        [0.       , 0.       , 0.0529   ]])</code></pre>
 </div>
 </div>
-<div id="28a70ffb-360c-41b2-b680-0a56be1c5c8f" class="cell" data-execution_count="364">
+<div id="28a70ffb-360c-41b2-b680-0a56be1c5c8f" class="cell" data-execution_count="414">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>cov_control <span class="op">=</span> np.sqrt(cov_control) <span class="op">@</span> correlation_matrix_control <span class="op">@</span> np.sqrt(cov_control)</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>cov_control</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="364">
+<div class="cell-output cell-output-display" data-execution_count="414">
 <pre><code>array([[0.0729  , 0.012555, 0.      ],
        [0.012555, 0.0625  , 0.      ],
        [0.      , 0.      , 0.0169  ]])</code></pre>
 </div>
 </div>
-<div id="78b89ffe-f00d-4b59-954d-a19a3f482b58" class="cell" data-execution_count="365">
+<div id="78b89ffe-f00d-4b59-954d-a19a3f482b58" class="cell" data-scrolled="true" data-execution_count="415">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>log_marker_values_down <span class="op">=</span> np.random.multivariate_normal(</span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    mean_down,</span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>    cov_down,</span>
@@ -413,164 +413,169 @@ Var(X_1) &amp; 0 &amp; 0\\
 <span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>log_marker_values_down, log_marker_values_down.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="365">
-<pre><code>(array([[ 0.11493344, -0.20859942,  0.69852901],
-        [ 0.12108628, -0.6533134 ,  0.17228454],
-        [ 0.6683498 , -0.52857136,  0.70239994],
-        [ 0.86571316, -0.41545867,  0.35282775],
-        [ 0.56822223, -0.22578447,  0.61392708],
-        [ 0.16284015, -1.03639019,  0.54176378],
-        [ 0.11806046, -0.4693144 ,  0.72141462],
-        [ 0.34300039, -0.55932966,  0.39258563],
-        [ 0.68759385, -0.18330389,  0.58966838],
-        [ 0.53617983, -0.6690769 ,  0.61864987],
-        [ 0.39308291, -1.07793593,  0.27351692],
-        [ 0.51946848, -1.01165788,  0.57031212],
-        [ 0.680714  , -0.37174325,  0.79869771],
-        [ 0.7535424 , -0.99772618,  0.38543891],
-        [ 0.52148114, -0.69184814,  0.41028417],
-        [-0.1391413 , -0.62240247,  0.09112201],
-        [ 0.48862767, -0.88517884,  0.66962404],
-        [ 0.42241369, -0.63857827,  0.57488994],
-        [ 0.54003357, -1.10784878,  0.81923421],
-        [ 0.40029961, -0.94391932,  0.25349216],
-        [ 0.57756953, -1.42114919,  0.64986053],
-        [ 0.56482732, -1.26167809,  0.41531419],
-        [ 0.61727079, -0.58609221,  0.25567686],
-        [ 0.92963612, -0.96164917,  0.55081777],
-        [ 1.04453534, -0.32754898,  0.93386966],
-        [ 0.55642763, -0.56884606,  0.57047581],
-        [ 0.58404696, -0.33973416,  0.932265  ],
-        [ 0.43649809, -0.32560567,  0.50835541],
-        [ 0.58721459, -0.73915247,  0.38253018],
-        [ 0.87707837, -0.68418318,  0.98892924],
-        [ 0.76559849, -0.70523285,  0.4197138 ],
-        [ 0.23975134, -0.83771911,  0.09938787],
-        [ 0.42701804, -1.33109082,  0.39280834],
-        [ 0.0225133 , -1.18095063,  0.99796645],
-        [ 0.38200761, -0.91492645,  0.66809388],
-        [ 0.74988696, -0.7358926 ,  0.1229998 ],
-        [ 0.19089126, -1.30087593,  0.44293301],
-        [ 0.98921646, -0.13496021,  0.90074409],
-        [ 0.33408153, -0.41976207,  0.50262359],
-        [ 0.77394918, -0.40163506,  0.37399127],
-        [ 0.08678788, -1.18905159,  0.59341189],
-        [ 0.89451945, -0.62489845,  0.82337132],
-        [ 0.41116527, -1.33284498,  0.30354871],
-        [ 0.47781024, -0.42681356,  0.28411298],
-        [ 0.56384211, -0.55853682,  0.67418547],
-        [ 0.30458721, -0.72537169,  0.60277325],
-        [ 0.44796122, -0.36786209,  0.94052858],
-        [ 0.45902043, -0.39358913,  0.89857222],
-        [ 0.74806236, -0.27751729,  0.39859328],
-        [ 0.29083172, -0.8922962 ,  0.4105765 ],
-        [ 0.46099948, -0.4819084 ,  0.42299957],
-        [ 0.44261015, -0.55700061,  0.88937145],
-        [ 0.44449547, -0.30514006,  0.18285955],
-        [ 0.41158294, -0.76752701,  0.71239546],
-        [ 0.8148118 , -0.69399385,  0.64319181],
-        [ 0.68127852, -0.54777874,  0.91556975],
-        [ 0.68985716, -0.47873022,  0.94569844],
-        [ 0.6852494 , -0.68861809,  0.49079216],
-        [ 1.05091759, -0.18314943,  0.48944748],
-        [ 0.14350617, -1.03371467,  0.86918882],
-        [ 0.41808667, -0.9738626 ,  0.4805211 ],
-        [ 0.71413908, -0.83696995,  0.43564454],
-        [ 0.95251906, -1.18222889,  0.64343655],
-        [ 0.61017239, -0.48555404,  0.53707659],
-        [ 0.67207315, -0.73290137,  1.03444448],
-        [ 0.51853458, -0.44177619,  0.55647114],
-        [ 0.01432784, -0.71525558,  0.5136223 ],
-        [ 0.60803971, -0.97287898,  0.60721737],
-        [ 0.78723635, -0.50420133,  0.57067851],
-        [ 0.61345686, -0.24598206,  1.12728513],
-        [ 0.53758412, -1.09939331,  0.45385677],
-        [ 0.33144511, -0.6949179 ,  0.62529027],
-        [-0.10996936, -0.95452902,  0.73391089],
-        [ 0.2981262 , -0.53880506,  0.32288134],
-        [ 0.54673365, -0.44054879,  0.31930117],
-        [ 0.48973239, -0.54589076,  0.6373008 ],
-        [ 0.66143259, -0.74415605,  0.69684755],
-        [-0.08534622, -1.05531095,  0.55040215],
-        [ 0.07554473, -1.4864257 ,  0.78111644],
-        [ 0.47556813, -1.25859084,  0.55949693],
-        [ 1.02262028, -0.39662967,  0.56481584],
-        [ 0.69504525, -1.01611721,  0.3918692 ],
-        [ 0.41945588, -0.74733831,  0.72668259],
-        [ 1.22092342, -0.09329539,  0.52582654],
-        [ 0.50102977, -0.74288652,  0.31273209],
-        [ 0.58527047, -0.83800774,  0.58425692],
-        [ 0.00913463, -1.00366536,  0.55121902],
-        [ 0.30405427, -0.77326513,  0.57908954],
-        [ 0.82021328, -1.04438272,  0.51449263],
-        [ 0.71517632, -0.87996369,  0.76648825],
-        [ 0.35884272, -0.80423353,  0.38780943],
-        [ 0.3079663 , -0.24626751,  0.83632471],
-        [ 0.78027085, -0.51966038,  0.62124222],
-        [ 0.71122218, -0.68511949,  0.7783483 ],
-        [ 0.65313013, -0.28236386,  0.55210436],
-        [ 0.74095524, -0.89720234,  0.29632518],
-        [ 0.73195129, -0.91243733,  0.75169912],
-        [ 0.40404146, -0.65880874,  0.52204702],
-        [ 0.51910254, -0.61423444,  0.35579953],
-        [ 0.55318287, -0.74479314,  0.40113711],
-        [ 0.79133822, -0.40715588,  0.545542  ],
-        [ 0.33975825, -0.66185177,  0.33769087],
-        [ 0.37695822, -1.0138175 ,  0.84021749],
-        [ 0.89866685, -0.22811667,  0.50045367],
-        [ 0.21492785, -0.45307287,  0.5199752 ],
-        [ 0.58209098, -0.59931896,  0.62597161],
-        [ 0.72024828, -0.73586888,  0.44199394],
-        [ 0.73906642, -0.59439604,  0.33991182],
-        [-0.03651235, -0.84568083,  0.65429805],
-        [ 0.73831175, -0.88087225,  0.57255128],
-        [ 0.69324435, -0.80213865,  0.58311813],
-        [ 0.06524489, -0.56219194,  0.41224467],
-        [ 0.87210147, -0.7419823 ,  0.94698388],
-        [ 0.35609007, -0.59235906,  0.25121306],
-        [ 0.37283541, -1.17863193,  0.40842128],
-        [ 0.27720938, -0.44963275,  0.55950291],
-        [ 0.93254037, -0.8159036 ,  0.28310303],
-        [ 0.46540926, -0.66956252,  0.87524504],
-        [ 0.64350743, -1.13330843,  0.64490593],
-        [ 0.16055923, -0.86439343,  0.19642213],
-        [ 0.31279713, -0.99307633,  0.10546351],
-        [-0.17443372, -1.25743764,  0.73951251],
-        [ 0.28190121, -0.92329913,  0.55623717],
-        [ 0.7623829 , -0.41075465,  0.49705077],
-        [ 0.26396864, -0.57159054,  0.47819558],
-        [ 0.76496608, -0.50890824,  0.10638769],
-        [ 0.41850014, -0.90373055,  0.40230964],
-        [ 0.56768951, -0.64692118,  0.61611332],
-        [ 0.36505816, -0.99475656,  0.75450307],
-        [ 0.58809132, -1.20077165,  0.57352926],
-        [ 0.57997549, -0.39025151,  0.9102961 ],
-        [ 0.51487903, -1.02598566,  0.6919756 ],
-        [ 0.44622868, -0.84843099,  0.712805  ],
-        [-0.00259471, -0.72242752,  0.86101164],
-        [ 1.07237006, -0.50667459,  0.45476873],
-        [ 0.68206306, -0.23820301,  0.84817905],
-        [ 0.85174728, -0.69143825,  0.35840249],
-        [ 0.69016234, -0.67557569,  0.45270962],
-        [ 0.63898173, -0.19904426,  1.03646668],
-        [ 0.13595797, -1.0228326 ,  0.24058114],
-        [ 1.06362701, -0.01216875,  0.6876475 ],
-        [ 1.07152781, -0.64368132,  0.22157441],
-        [ 0.37336931, -0.49508889,  0.58738684],
-        [ 0.48072793, -0.70844629,  0.38174051],
-        [ 0.6780483 , -0.48368239,  0.75535811],
-        [ 0.53801366, -0.84165273,  0.4588055 ],
-        [ 0.17929432, -1.28763852,  0.68245771],
-        [ 0.47614492, -0.89817657,  0.50977217],
-        [ 0.84472974, -0.86375815,  0.63446135],
-        [ 0.22567292, -0.82675855,  0.7107267 ],
-        [ 0.63285009, -0.95755382,  0.65067498],
-        [ 0.74666347, -0.53031446,  0.18321238],
-        [ 0.37301785, -0.54707904,  0.31001904]]),
- (153, 3))</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="415">
+<pre><code>(array([[ 7.92637306e-01, -6.25442737e-01,  2.91406031e-01],
+        [ 7.11881015e-01, -9.12072672e-01,  9.19873395e-01],
+        [ 4.95040615e-01, -3.25126354e-01,  5.11020872e-01],
+        [ 3.20752995e-01, -9.81852108e-01,  3.99680760e-01],
+        [ 4.03824420e-01, -9.42267684e-01, -4.71422386e-02],
+        [ 6.90955335e-01, -1.33213374e+00,  6.87189970e-01],
+        [-5.47696889e-01, -1.10582127e+00,  8.30730923e-01],
+        [ 6.83661033e-01, -1.37157094e-01,  4.54893557e-01],
+        [ 3.82695653e-01, -5.53495796e-01,  4.76828923e-01],
+        [-2.80556570e-01, -7.22151478e-01,  4.70742833e-01],
+        [ 1.64110182e-01, -1.09916867e+00,  7.22108341e-01],
+        [ 6.55299951e-01, -7.41294183e-01,  1.35689925e-01],
+        [ 1.23049555e+00, -4.67505924e-01,  6.89741589e-01],
+        [ 4.86109634e-02, -1.17927189e+00,  8.95105549e-01],
+        [ 1.97938818e-01, -7.55913371e-01,  3.95673739e-01],
+        [ 8.03379877e-01, -7.62466474e-01,  5.30802357e-01],
+        [ 2.98341183e-01, -6.93062005e-01,  7.61946423e-01],
+        [ 4.79445113e-01, -3.77683201e-01,  4.35704580e-01],
+        [ 4.01109224e-01, -6.65756950e-01,  5.45933342e-01],
+        [ 4.04681257e-01, -5.43653374e-01,  2.38687752e-01],
+        [ 4.77972421e-01, -7.88183096e-01,  5.33732833e-01],
+        [ 1.14807457e+00, -2.27384844e-01,  3.15108857e-01],
+        [ 5.62766054e-01, -1.63537861e-01,  4.44510172e-01],
+        [ 1.46873376e-01, -1.72303256e-01,  5.21654986e-01],
+        [ 6.61001020e-01, -1.15573666e+00,  7.28152779e-01],
+        [ 9.00794443e-01, -8.71830417e-01,  8.88499247e-01],
+        [ 6.37143580e-01, -1.20676507e-01,  3.49151745e-01],
+        [ 1.84767998e-01, -5.86142350e-01,  6.62574913e-01],
+        [-3.15853561e-01, -8.59453139e-01,  6.19544492e-01],
+        [ 4.34428809e-01, -1.06157646e+00,  6.94479186e-01],
+        [ 7.88671093e-01, -8.21923890e-01,  1.04756327e+00],
+        [-2.60961471e-01, -8.10414802e-01,  1.89642555e-01],
+        [ 3.17109674e-01, -8.10493834e-01,  8.08927362e-01],
+        [ 2.76849808e-01, -1.44344900e+00,  6.73452283e-01],
+        [ 2.10654883e-01, -5.80933319e-01,  6.16013425e-01],
+        [ 3.62252762e-01, -1.08250756e+00,  6.22018876e-01],
+        [ 5.58374705e-01, -4.47891596e-01,  1.87991762e-01],
+        [ 4.07448266e-01, -8.01151375e-01,  4.41970656e-01],
+        [ 5.59826131e-01, -7.60620392e-01,  5.73350739e-01],
+        [ 7.45792431e-01, -1.05446476e+00,  3.27350985e-01],
+        [ 3.23274802e-01, -1.23547914e+00,  7.00703778e-01],
+        [ 2.50318354e-01, -1.01867002e+00,  4.88135762e-01],
+        [ 3.15342370e-01, -8.91646883e-01,  9.00507202e-01],
+        [ 7.50190475e-01, -7.02299135e-01,  4.52799594e-01],
+        [ 3.16317188e-01, -1.37974847e-01,  3.57544445e-01],
+        [ 7.50194187e-01, -6.79325598e-01,  5.38902640e-01],
+        [ 8.84909076e-02, -8.70934861e-01,  4.78010920e-01],
+        [ 2.00533562e-01, -9.47158480e-01,  8.26892824e-01],
+        [ 7.16050725e-01, -7.51428417e-01,  5.50915603e-01],
+        [ 2.70349967e-01, -7.45997700e-01,  5.12314025e-01],
+        [ 9.44171307e-02, -8.76310945e-01,  4.07641930e-01],
+        [ 4.44617812e-01, -6.44355850e-01,  4.09183331e-01],
+        [ 7.61707922e-01, -9.19179989e-01,  1.40306613e-01],
+        [-2.80809475e-02, -1.56973783e-01,  4.10075439e-01],
+        [ 7.54950773e-01, -5.16066789e-01,  6.36794493e-01],
+        [ 2.42171345e-01, -1.11188605e+00,  5.16967535e-01],
+        [ 1.13343016e+00, -1.00805825e+00,  4.92314674e-01],
+        [ 3.75151123e-01, -6.98296021e-01,  2.45537677e-01],
+        [ 5.48681444e-01, -3.29251345e-01,  2.21525517e-01],
+        [ 6.12710563e-01, -8.89560186e-01,  9.28857881e-02],
+        [ 2.46173974e-01, -6.53193875e-01,  3.98964542e-01],
+        [ 8.60523135e-01, -9.77359763e-01,  3.98016341e-01],
+        [ 8.09738241e-01, -5.66798363e-01,  6.34885361e-01],
+        [ 9.65992220e-02, -1.26180688e+00,  3.06556328e-01],
+        [ 9.61315631e-01, -7.37236815e-01,  3.69163210e-01],
+        [ 5.69843101e-01, -1.05334146e+00,  5.82618263e-01],
+        [ 2.44234584e-01, -1.02522981e+00,  3.45307435e-01],
+        [ 1.83237538e-01, -5.29186204e-01,  4.33517348e-01],
+        [ 5.05924067e-01, -3.25803806e-01,  6.28348261e-01],
+        [ 4.48557704e-01, -7.40306296e-01,  4.52247409e-01],
+        [ 1.20825585e+00, -3.66143344e-01,  3.96955743e-01],
+        [ 8.09630694e-01, -2.77644996e-01,  4.91242545e-01],
+        [ 6.81628873e-01, -1.03121615e+00,  2.97836032e-01],
+        [ 3.00471042e-01, -1.02251761e+00,  4.70102898e-01],
+        [ 3.34152626e-01, -8.30700760e-01,  8.17333609e-01],
+        [ 6.78650589e-01, -3.38704542e-01,  6.89115684e-01],
+        [ 9.66132984e-01, -5.70981137e-01,  1.60489046e-01],
+        [-7.85357191e-02, -7.12214649e-01,  7.44259542e-01],
+        [ 7.59268502e-01, -4.85595904e-01,  5.68930193e-01],
+        [ 9.71524884e-01, -4.51177147e-01, -1.36919762e-01],
+        [ 7.81348735e-01, -3.68340948e-02,  2.43187427e-01],
+        [ 8.38361625e-01, -6.07197975e-01,  3.38085984e-01],
+        [ 6.49790760e-01, -8.94837189e-01,  4.53055589e-01],
+        [ 6.17180239e-01,  3.39578066e-01,  1.03434182e-03],
+        [ 2.28494237e-01, -9.34203240e-01,  6.94280111e-01],
+        [-2.88072935e-02, -5.84270543e-01,  8.07355422e-01],
+        [ 5.24500777e-01, -9.37342363e-01,  3.80659739e-01],
+        [-5.61103887e-02, -6.71970194e-01,  3.32246662e-01],
+        [ 5.77917250e-01, -1.24139390e+00,  8.47952241e-01],
+        [ 3.55976618e-01, -1.00479319e+00,  1.98265743e-01],
+        [ 5.56405941e-01, -6.22390652e-01,  2.46069487e-01],
+        [ 4.30785292e-01, -1.16362198e+00,  3.90138814e-01],
+        [ 5.42303935e-01, -1.70077680e-01,  5.91268285e-01],
+        [ 4.27786887e-01, -8.67406072e-01,  4.92526306e-01],
+        [ 1.89129810e-01, -7.24675084e-01,  9.07606388e-01],
+        [ 5.67052080e-01, -3.68514753e-01,  1.68900850e-02],
+        [ 5.58347756e-01, -8.95232884e-01,  3.94022546e-01],
+        [ 2.18917051e-01, -6.79808090e-01,  5.88548987e-01],
+        [ 2.18776508e-01, -1.30199801e+00,  7.56668122e-01],
+        [ 2.72613698e-01, -9.30634440e-01,  1.70722329e-01],
+        [ 5.14949576e-01, -6.56291250e-01,  7.52929431e-01],
+        [-8.71722585e-02, -5.30364795e-01,  9.27430257e-01],
+        [ 6.73345187e-01, -1.07438745e+00,  4.22211718e-02],
+        [ 7.38672786e-01, -3.00950976e-01,  7.32652178e-01],
+        [ 4.66003739e-01, -6.21355109e-01,  5.76782984e-01],
+        [ 8.19749450e-01, -1.17767303e+00,  5.44409831e-01],
+        [ 5.05152513e-01, -1.32362790e+00,  2.50449867e-01],
+        [ 1.16431202e+00, -6.48226088e-01,  4.74502417e-01],
+        [ 6.84681085e-01, -3.87343555e-01,  3.36126727e-01],
+        [ 6.05313611e-01, -7.19045124e-01,  5.45233626e-01],
+        [ 5.53144453e-01, -6.84212994e-01,  8.02991243e-01],
+        [ 2.25532265e-01, -1.04858328e+00,  9.44205773e-01],
+        [ 1.26591815e-01, -6.35319082e-01,  4.25315644e-01],
+        [ 6.25213654e-01, -4.56737358e-01,  9.98665951e-01],
+        [-1.06637643e-02, -8.13819152e-01,  8.93763542e-01],
+        [ 4.42345714e-01, -7.74911824e-01,  3.31532797e-01],
+        [ 4.78107161e-01, -8.73446921e-01,  4.09091291e-01],
+        [ 4.83909712e-01, -1.07440984e+00,  7.79235288e-01],
+        [ 6.13783255e-01, -8.58332343e-01,  3.75104484e-01],
+        [ 5.86783413e-02, -4.96377486e-01,  6.55786040e-01],
+        [ 5.61640457e-01, -7.30745536e-01,  7.36285016e-01],
+        [ 7.32605650e-01, -5.02214312e-01,  7.83683372e-01],
+        [ 3.50397194e-02, -1.01195691e+00,  5.92299329e-01],
+        [ 4.07831603e-01, -5.07531114e-01,  9.53170117e-01],
+        [ 3.62047656e-01, -6.63591541e-01,  3.13082286e-01],
+        [ 1.73009799e-01, -7.50468411e-01,  5.52322024e-01],
+        [ 2.00711383e-01, -6.44564864e-01,  2.97397288e-01],
+        [ 4.20388318e-01, -8.77098319e-01,  6.35365641e-01],
+        [ 3.06007885e-01, -4.29645240e-01,  7.20612088e-01],
+        [ 4.08896825e-01, -5.64244124e-01,  1.59672187e-01],
+        [ 5.30367377e-01, -7.67184192e-01,  2.60944795e-01],
+        [ 2.48560623e-01, -9.06311532e-01,  4.70873026e-01],
+        [-1.23605683e-02, -6.22007795e-01,  3.54844865e-01],
+        [ 3.91344724e-01, -4.72691171e-01,  4.85927610e-01],
+        [ 8.78835143e-01, -4.46936399e-01,  3.72749296e-01],
+        [ 9.55734236e-01, -9.52257241e-01,  5.17385234e-01],
+        [ 6.92246777e-01, -1.03235424e+00,  5.98458540e-01],
+        [ 6.24609335e-01, -5.16279448e-01,  7.13894338e-01],
+        [ 1.46620210e-01, -1.30189188e+00,  4.57318084e-01],
+        [ 7.72547103e-01, -1.11787793e+00,  4.26482100e-01],
+        [ 1.03293777e+00, -3.54160334e-01,  6.28501823e-01],
+        [ 3.30311658e-01, -8.67663047e-01,  6.79308347e-01],
+        [ 6.04346809e-01, -4.34683072e-01,  1.04361055e+00],
+        [ 1.28357737e-01, -9.53809197e-01,  4.00218847e-01],
+        [ 3.34737996e-01, -7.49183220e-01,  4.43443308e-01],
+        [ 1.30552002e-01, -8.33855663e-01,  4.71081597e-01],
+        [ 6.38615882e-01, -5.97445869e-01,  3.58049585e-01],
+        [ 1.43175648e-01, -7.28549749e-01,  6.26219677e-01],
+        [-1.05087768e-01, -5.03283149e-01,  7.65059003e-01],
+        [-4.60244815e-02, -1.14189925e+00,  6.21374116e-01],
+        [ 2.83583733e-01, -1.01437193e+00,  5.98935962e-01],
+        [ 6.12749180e-01, -6.21047152e-01,  5.08753302e-01],
+        [ 3.47463085e-01, -5.81424711e-01,  5.52564378e-01],
+        [ 9.72949323e-01, -3.07331861e-01,  7.79435409e-01],
+        [ 4.46108487e-01, -1.06091814e+00,  6.57400055e-01],
+        [-9.15966403e-02, -1.74806754e+00,  6.91385496e-01],
+        [ 8.97704593e-01, -6.80262290e-01,  1.13612544e+00],
+        [ 1.08538605e-01, -1.12697673e+00,  2.92689950e-01]]),
+ (158, 3))</code></pre>
 </div>
 </div>
-<div id="0c01a75b-8bbf-4e6c-b9af-140c7a90cf67" class="cell" data-execution_count="366">
+<div id="0c01a75b-8bbf-4e6c-b9af-140c7a90cf67" class="cell" data-execution_count="416">
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>log_marker_values_control <span class="op">=</span> np.random.multivariate_normal(</span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>    mean_control,</span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    cov_control,</span>
@@ -578,54 +583,54 @@ Var(X_1) &amp; 0 &amp; 0\\
 <span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>log_marker_values_control, log_marker_values_control.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="366">
-<pre><code>(array([[-0.22855616, -0.37384354, -0.07730509],
-        [-0.03682961,  0.08250039, -0.143165  ],
-        [-0.03581613, -0.2645937 ,  0.1535762 ],
+<div class="cell-output cell-output-display" data-execution_count="416">
+<pre><code>(array([[-0.11497528,  0.28051598,  0.2491788 ],
+        [-0.32430664, -0.147406  , -0.18140637],
+        [-0.40573785,  0.66809531,  0.06793337],
         ...,
-        [-0.04897406,  0.52105545,  0.28247605],
-        [ 0.54078391, -0.22388616,  0.04563288],
-        [-0.56830697,  0.38610342,  0.38581095]]),
- (99847, 3))</code></pre>
+        [ 0.07578579,  0.03609642,  0.18519711],
+        [ 0.37674396, -0.09690599, -0.34386122],
+        [ 0.052934  ,  0.28484571, -0.09235188]]),
+ (99842, 3))</code></pre>
 </div>
 </div>
-<div id="6fd9d1f2-6b85-4b6a-abca-46ebca186ee3" class="cell" data-execution_count="367">
+<div id="6fd9d1f2-6b85-4b6a-abca-46ebca186ee3" class="cell" data-execution_count="417">
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>log_marker_values <span class="op">=</span> np.zeros((sample_size, <span class="bu">len</span>(marker_config.markers)))</span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>log_marker_values.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="367">
+<div class="cell-output cell-output-display" data-execution_count="417">
 <pre><code>(100000, 3)</code></pre>
 </div>
 </div>
-<div id="43b9ac4b-6d6b-40de-87d9-2f13d60e59ed" class="cell" data-execution_count="368">
+<div id="43b9ac4b-6d6b-40de-87d9-2f13d60e59ed" class="cell" data-execution_count="418">
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>log_marker_values[is_down] <span class="op">=</span> log_marker_values_down</span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>log_marker_values[<span class="op">~</span>is_down] <span class="op">=</span> log_marker_values_control</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="3853e1b4-3eeb-4c48-b806-4cb9f924ae63" class="cell" data-execution_count="369">
+<div id="3853e1b4-3eeb-4c48-b806-4cb9f924ae63" class="cell" data-execution_count="419">
 <div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>log_marker_values</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="369">
-<pre><code>array([[-0.22855616, -0.37384354, -0.07730509],
-       [-0.03682961,  0.08250039, -0.143165  ],
-       [-0.03581613, -0.2645937 ,  0.1535762 ],
+<div class="cell-output cell-output-display" data-execution_count="419">
+<pre><code>array([[-0.11497528,  0.28051598,  0.2491788 ],
+       [-0.32430664, -0.147406  , -0.18140637],
+       [-0.40573785,  0.66809531,  0.06793337],
        ...,
-       [-0.04897406,  0.52105545,  0.28247605],
-       [ 0.54078391, -0.22388616,  0.04563288],
-       [-0.56830697,  0.38610342,  0.38581095]])</code></pre>
+       [ 0.07578579,  0.03609642,  0.18519711],
+       [ 0.37674396, -0.09690599, -0.34386122],
+       [ 0.052934  ,  0.28484571, -0.09235188]])</code></pre>
 </div>
 </div>
-<div id="12a84074-89bf-499f-8c2b-9369a4c750fd" class="cell" data-execution_count="370">
+<div id="12a84074-89bf-499f-8c2b-9369a4c750fd" class="cell" data-execution_count="420">
 <div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>marker_values <span class="op">=</span> np.exp(log_marker_values)</span>
 <span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>marker_values</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="370">
-<pre><code>array([[0.79568161, 0.68808456, 0.92560742],
-       [0.96384035, 1.0859991 , 0.86661107],
-       [0.96481768, 0.76751773, 1.16599663],
+<div class="cell-output cell-output-display" data-execution_count="420">
+<pre><code>array([[0.89138818, 1.3238127 , 1.28297141],
+       [0.7230285 , 0.86294355, 0.83409634],
+       [0.66648486, 1.95051865, 1.07029399],
        ...,
-       [0.95220583, 1.68380389, 1.32641001],
-       [1.71735259, 0.79940613, 1.04669008],
-       [0.5664837 , 1.47123682, 1.47080658]])</code></pre>
+       [1.07873148, 1.03675581, 1.20345563],
+       [1.45753108, 0.90764133, 0.70902732],
+       [1.05436005, 1.32955687, 0.91178426]])</code></pre>
 </div>
 </div>
-<div id="1c66abcc-6070-4782-9e55-03681ef0f47d" class="cell" data-execution_count="374">
+<div id="1c66abcc-6070-4782-9e55-03681ef0f47d" class="cell" data-execution_count="421">
 <div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure()</span>
 <span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> fig.add_subplot(<span class="dv">111</span>, projection<span class="op">=</span><span class="st">'3d'</span>)</span>
 <span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -644,7 +649,7 @@ Var(X_1) &amp; 0 &amp; 0\\
 </div>
 </div>
 </div>
-<div id="223cbea2-6c75-4087-b766-7231b59e5ad1" class="cell" data-execution_count="395">
+<div id="223cbea2-6c75-4087-b766-7231b59e5ad1" class="cell" data-execution_count="422">
 <div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.graph_objects <span class="im">as</span> go</span>
 <span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.io <span class="im">as</span> pio</span>
 <span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -738,10 +743,10 @@ Var(X_1) &amp; 0 &amp; 0\\
 <span id="cb44-91"><a href="#cb44-91" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb44-92"><a href="#cb44-92" aria-hidden="true" tabindex="-1"></a>    fig.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="4ad61863-f907-4668-a6f5-6964f318fdf8" class="cell" data-execution_count="396">
+<div id="4ad61863-f907-4668-a6f5-6964f318fdf8" class="cell" data-execution_count="423">
 <div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>create_interactive_plot(marker_values, maternal_age, is_down, marker_config, z_axis<span class="op">=</span><span class="st">'maternal_age'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="5d234e11-3c36-42e7-bd4b-ba450bcd7711" class="cell">
+<div id="5d234e11-3c36-42e7-bd4b-ba450bcd7711" class="cell" data-execution_count="424">
 <div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create_interactive_plot(marker_values, maternal_age, is_down, marker_config, z_axis='maternal_age')</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
